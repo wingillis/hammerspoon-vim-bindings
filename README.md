@@ -4,11 +4,11 @@ modal keybindings to give vim-like navigation for anything with a cursor
 ## how to install
 - [download hammerspoon](https://github.com/Hammerspoon/hammerspoon/releases/latest)
 - clone this repo
-- place the vim_bindings.lua file in your ~/.hammerspoon dir which is created when you first run hammerspoon
+- place the `vim_bindings.lua` file in your `~/.hammerspoon` dir which is created when you first run hammerspoon
 - if you already have an `init.lua` file you've customized:
 	- take a look at the supplied `init.lua` file to see how to initialize vim keybindings
 - if you don't
-	- copy the one in this repo into your .hammerspoon dir
+	- copy the one in this repo into your `~/.hammerspoon` dir
 
 ## intructions on how to use
 - use `option + escape` to enter vim-mode
