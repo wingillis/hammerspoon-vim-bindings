@@ -214,7 +214,7 @@ function Vim:eventWatcher(evt)
 		self.events = 1
 		keyPress({'cmd'}, 'v')
 		self:setMode('normal')
-	elseif insertEvents:find(evtChar, 1, true) ~= nil and self.state == 'normal' and commandMods:find(evtChar) == nil then
+	elseif insertEvents:find(evtChar, 1, true) ~= nil and self.state == 'normal' and self.commandMods == nil then
 		-- do the insert
 		self:insert(evtChar)
 	else
