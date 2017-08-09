@@ -187,6 +187,7 @@ function Vim:eventWatcher(evt)
 		print('in eventWatcher: pressed ' .. evtChar)
 	end
 	local insertEvents = 'iIsaAoO'
+	local commandMods = 'rcdy'
 	-- this function mostly handles the state-dependent events
 	if self.events > 0 then
 		if self.debug then
@@ -213,7 +214,7 @@ function Vim:eventWatcher(evt)
 		self.events = 1
 		keyPress({'cmd'}, 'v')
 		self:setMode('normal')
-	elseif insertEvents:find(evtChar, 1, true) ~= nil and self.state == 'normal' then
+	elseif insertEvents:find(evtChar, 1, true) ~= nil and self.state == 'normal' and commandMods:find(evtChar) == nil then
 		-- do the insert
 		self:insert(evtChar)
 	else
