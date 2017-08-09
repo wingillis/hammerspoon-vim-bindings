@@ -13,7 +13,7 @@ modal keybindings to give vim-like navigation for anything with a cursor
 ## intructions on how to use
 - use `option + escape` to enter vim-mode
 - try out some basic navigation keys
-- please see [this blog post]() for some of the more advanced features and a list of what is not implemented
+- please see [this blog post](http://wingillis.github.io/blog/hammerspoon-vim-bindings/) for some of the more advanced features and a list of what is not implemented
 
 ## contributions
 This software is likely very buggy, so use at your own risk!! If you'd like to improve upon the design please feel free to help out!
