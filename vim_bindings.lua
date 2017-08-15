@@ -66,7 +66,8 @@ function Vim:new()
 						commandMods = nil, -- these are like d, y, c in normal mode
 						numberMods = 0, -- for # times to do an action
 						debug = false,
-						events = 0 -- flag for # events to let by the event mngr
+						events = 0, -- flag for # events to let by the event mngr
+						menubar = nil
 					}
 
 	self.__index = self
@@ -85,15 +86,17 @@ function Vim:start()
 	self.modal = hs.hotkey.modal.new({"alt"}, "escape")
 	function self.modal:entered()
 		-- reset to the normal mode
+		selfPointer:setMode('normal')
 		selfPointer.tapWatcher:start()
 		hs.alert('vim mode')
 	end
 	function self.modal:exited()
 		selfPointer.tapWatcher:stop()
-		selfPointer:setMode('normal')
+		selfPointer:setMode('insert')
 		selfPointer:resetEvents()
 	end
-
+	self.menubar = hs.menubar.new()
+	self:setMode('insert')
 end
 
 function Vim:handleKeyEvent(char)
@@ -263,6 +266,31 @@ function Vim:resetEvents()
 	self.events = 0
 end
 
+function Vim:showModeChangeAlert(mode)
+	local screen = hs.screen.mainScreen()
+	local size = screen:frame()
+	local height = 30
+	local width = 100
+	local drawPos = {x=size.x, y=size.h-height+size.y, w=width, h=height}
+	local alertRect = hs.drawing.rectangle(drawPos)
+	local textRect = hs.drawing.text(drawPos, mode)
+	alertRect:setFillColor(hs.drawing.color.asRGB({red=0.2, green=0.2, blue=0.2}))
+	alertRect:setStroke(false)
+	-- alertRect:setText(mode)
+	alertRect:show(0.5)
+	textRect:show(0.5)
+
+
+	hs.timer.doAfter(1, function()
+		alertRect:hide(0.5)
+		textRect:hide(0.5)
+		hs.timer.doAfter(0.5, function()
+			alertRect:delete()
+			textRect:delete()
+		end)
+	end)
+end
+
 function Vim:setMode(val)
 	self.state = val
 	-- TODO: change any other flags that are important for visual mode changes
@@ -271,11 +299,13 @@ function Vim:setMode(val)
 		self.commandMods = nil
 		self.numberMods = 0
 		self.moving = false
+		self.menubar:setIcon('/Users/wgillis/dev/lua/hammerspoon-vim-bindings/menubar-visual.pdf')
 	elseif val == 'normal' then
 		self.keyMods = {}
 		self.commandMods = nil
 		self.numberMods = 0
 		self.moving = false
+		self.menubar:setIcon('/Users/wgillis/dev/lua/hammerspoon-vim-bindings/menubar-normal.pdf')
 	elseif val == 'ex' then
 		-- do nothing because this is not implemented
 	elseif val == 'insert' then
@@ -283,7 +313,9 @@ function Vim:setMode(val)
 		-- insert mode is mainly for pasting characters or eventually applying
 		-- recordings
 		-- TODO: implement the recording feature
+		self.menubar:setIcon('/Users/wgillis/dev/lua/hammerspoon-vim-bindings/menubar-insert.pdf')
 	end
+	self:showModeChangeAlert(val)
 end
 
 -- what are the characters that end visual mode? y, p, x, d, esc
