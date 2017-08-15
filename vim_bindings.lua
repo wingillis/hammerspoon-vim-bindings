@@ -217,6 +217,10 @@ function Vim:eventWatcher(evt)
 		self.events = 1
 		keyPress({'cmd'}, 'v')
 		self:setMode('normal')
+	elseif evtChar == '/' then
+		self.events = 1
+		keyPress({'cmd'}, 'f')
+		keyPress({}, 'i')
 	elseif insertEvents:find(evtChar, 1, true) ~= nil and self.state == 'normal' and self.commandMods == nil then
 		-- do the insert
 		self:insert(evtChar)
