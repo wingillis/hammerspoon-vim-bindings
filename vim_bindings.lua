@@ -88,7 +88,6 @@ function Vim:start()
 		-- reset to the normal mode
 		selfPointer:setMode('normal')
 		selfPointer.tapWatcher:start()
-		hs.alert('vim mode')
 	end
 	function self.modal:exited()
 		selfPointer.tapWatcher:stop()
@@ -185,6 +184,16 @@ end
 function Vim:eventWatcher(evt)
 	-- stop an event from propagating through the event system
 	local stop_event = true
+	local keyMods = evt:getFlags()
+	if self.debug then
+		print('Modifiers active during keypress')
+		local numMods = 0
+		for k, v in pairs(keyMods) do
+			print(k, v)
+			numMods = numMods + 1
+		end
+		print(numMods)
+	end
 	local evtChar = evt:getCharacters()
 	if self.debug then
 		print('in eventWatcher: pressed ' .. evtChar)
@@ -198,6 +207,8 @@ function Vim:eventWatcher(evt)
 		end
 		stop_event = false
 		self.events = self.events - 1
+	-- elseif keyMods ~= nil then
+		-- handle modded key presses
 	elseif evtChar == 'v' then
 		-- if v key is hit, then go into visual mode
 		self:setMode('visual')
@@ -303,13 +314,13 @@ function Vim:setMode(val)
 		self.commandMods = nil
 		self.numberMods = 0
 		self.moving = false
-		self.menubar:setIcon('/Users/wgillis/dev/lua/hammerspoon-vim-bindings/menubar-visual.pdf')
+		self.menubar:setIcon('~/.hammerspoon/menubar-visual.pdf')
 	elseif val == 'normal' then
 		self.keyMods = {}
 		self.commandMods = nil
 		self.numberMods = 0
 		self.moving = false
-		self.menubar:setIcon('/Users/wgillis/dev/lua/hammerspoon-vim-bindings/menubar-normal.pdf')
+		self.menubar:setIcon('~/.hammerspoon/menubar-normal.pdf')
 	elseif val == 'ex' then
 		-- do nothing because this is not implemented
 	elseif val == 'insert' then
@@ -317,7 +328,7 @@ function Vim:setMode(val)
 		-- insert mode is mainly for pasting characters or eventually applying
 		-- recordings
 		-- TODO: implement the recording feature
-		self.menubar:setIcon('/Users/wgillis/dev/lua/hammerspoon-vim-bindings/menubar-insert.pdf')
+		self.menubar:setIcon('~/.hammerspoon/menubar-insert.pdf')
 	end
 	self:showModeChangeAlert(val)
 end
