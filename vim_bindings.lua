@@ -314,13 +314,13 @@ function Vim:setMode(val)
 		self.commandMods = nil
 		self.numberMods = 0
 		self.moving = false
-		self.menubar:setIcon('~/.hammerspoon/menubar-visual.pdf')
+		self.menubar:setIcon('~/.hammerspoon/vim-visual.pdf')
 	elseif val == 'normal' then
 		self.keyMods = {}
 		self.commandMods = nil
 		self.numberMods = 0
 		self.moving = false
-		self.menubar:setIcon('~/.hammerspoon/menubar-normal.pdf')
+		self.menubar:setIcon('~/.hammerspoon/vim-normal.pdf')
 	elseif val == 'ex' then
 		-- do nothing because this is not implemented
 	elseif val == 'insert' then
@@ -328,7 +328,7 @@ function Vim:setMode(val)
 		-- insert mode is mainly for pasting characters or eventually applying
 		-- recordings
 		-- TODO: implement the recording feature
-		self.menubar:setIcon('~/.hammerspoon/menubar-insert.pdf')
+		self.menubar:setIcon('~/.hammerspoon/vim-insert.pdf')
 	end
 	self:showModeChangeAlert(val)
 end
